@@ -1,0 +1,40 @@
+<ion-header-bar class="bar bar-header">
+  <h1 class="title">
+    Gophr
+  </h1>
+  <a href="#/new-purchase"
+    class="button-clear button button-dark">
+    <i class="icon ion-ios-plus-empty"></i>
+  </a>
+</ion-header-bar>
+<ion-content>
+  <div class="list">
+    <label class="item item-input search">
+      <input type="text" placeholder="Search"
+        ng-model="home.search">
+    </label>
+
+    <div class="item item-divider">
+      Pending
+    </div>
+    <a ng-href="#/pickup/{{item.id}}" class="item"
+      ng-repeat="item in home.getPendingList() | filter: home.search">
+      {{item.name}}
+      <span class="item-note warning">
+        {{item.pickupDateTime | relativeDate}}
+      </span>
+    </a>
+
+    <div class="item item-divider">
+      Completed
+    </div>
+    <div class="item"
+      ng-repeat="item in home.getCompletedList() | filter: home.search">
+      <!-- date, place -->
+      {{item.name}}
+      <span class="item-note">
+        {{item.pickupDateTime | date: 'shortDate'}}
+      </span>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,62 @@
+<ion-header-bar class="bar bar-header">
+  <a href="#/home"
+    class="button-clear button button-dark text">
+    back
+  </a>
+  <h1 class="title">
+    Gophr
+  </h1>
+</ion-header-bar>
+<ion-content>
+  <section class="pickup container">
+    <!-- BR Code -->
+    <div>
+      <ion-spinner icon="android" ng-show="pickup.loading"></ion-spinner>
+      <img id="br_code" ng-hide="pickup.loading || pickup.completed"></img>
+      <section class="completed" ng-show="pickup.completed">
+        <div><i class="icon ion-android-done"></i></div>
+      </section>
+    </div>
+
+    <div>
+      <strong>
+        Restaurant
+      </strong>
+    </div>
+    <div>
+      <time>
+        1:30pm
+      </time>
+    </div>
+  </section>
+
+  <div class="list">
+    <div class="item item-divider">
+      Black Friday
+    </div>
+
+    <a class="item flex-item-meta">
+      <!-- qty, item name, amount -->
+      <span>1</span>
+      <span class="description">Roasted Beef</span>
+      <span>$23.12</span>
+    </a>
+    <a class="item flex-item-meta">
+      <!-- qty, item name, amount -->
+      <span class="highlight">2</span>
+      <span class="description">Mashed Potato</span>
+      <span>$3.42</span>
+    </a>
+    <a class="item flex-item-meta">
+      <!-- qty, item name, amount -->
+      <span class="highlight">5</span>
+      <span class="description">Frech Fries</span>
+      <span>$10.45</span>
+    </a>
+    <a class="item flex-item-meta total">
+      <!-- qty, item name, amount -->
+      <span class="description">Total</span>
+      <span>$36.76</span>
+    </a>
+  </div>
+</ion-content>

@@ -1,0 +1,46 @@
+<ion-header-bar class="bar bar-header">
+  <a href="javascript:void(0)"
+    ng-click="purchase.cancel()"
+    class="button-clear button button-dark text">
+    cancel
+  </a>
+  <h1 class="title">
+    Gophr
+  </h1>
+  <a href="javascript:void(0)"
+    ng-click="purchase.next()"
+    class="button-clear button button-dark text">
+    next
+  </a>
+</ion-header-bar>
+<ion-content>
+  <div class="list">
+    <label class="item item-input search">
+      <input type="text" placeholder="Search"
+        ng-model="purchase.search">
+    </label>
+
+    <div class="item item-divider item-button-right">
+      Groups
+      <button class="button button-clear button-dark">
+        <i class="icon ion-ios-plus-empty"></i>
+      </button>
+    </div>
+    <div class="item item-icon-right"
+      ng-repeat="group in purchase.groups | filter: purchase.search"
+      ng-click="purchase.selectItem(group)">
+      {{group.name}}
+      <i class="icon ion-ios-checkmark-empty" ng-show="group.isSelected"></i>
+    </div>
+
+    <div class="item item-divider">
+      Contacts
+    </div>
+    <div class="item item-icon-right"
+      ng-repeat="contact in purchase.contacts | filter: purchase.search"
+      ng-click="purchase.selectItem(contact)">
+      {{contact.name}}
+      <i class="icon ion-ios-checkmark-empty" ng-show="contact.isSelected"></i>
+    </div>
+  </div>
+</ion-content>
