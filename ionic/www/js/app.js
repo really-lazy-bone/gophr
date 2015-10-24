@@ -54,16 +54,21 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate'])
 
     $timeout(function() {
       vm.loadingModal.close();
-      vm.completeModal = $ionicPopup.show({
-        template: '<div><i class="icon ion-android-done"></i></div>' +
-          '<div>Sent</div>',
-        cssClass: 'confirmation'
-      });
 
       $timeout(function() {
-        vm.completeModal.close();
-        $location.path('/home');
-      }, 1000);
+        vm.completeModal = $ionicPopup.show({
+          template: '<div><i class="icon ion-android-done"></i></div>' +
+            '<div>Sent</div>',
+          cssClass: 'confirmation'
+        });
+
+        $timeout(function() {
+          vm.completeModal.close();
+          $timeout(function() {
+            $location.path('/home');
+          }, 500);
+        }, 1000);
+      }, 500);
     }, 1000);
 
   }
@@ -179,12 +184,13 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate'])
   }
 })
 
-.controller('PickupCtrl', function($ionicLoading, $timeout) {
+.controller('PickupCtrl', function($timeout) {
   var vm = this;
 
   var brCodeDOM = document.querySelector('#br_code');
 
   vm.loading = true;
+  vm.completed = false;
 
   $timeout(function() {
     vm.loading = false;
