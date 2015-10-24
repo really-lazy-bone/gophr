@@ -9423,3 +9423,7 @@ input, button, select, textarea {
 
 .loading svg {
   margin: 0; }
+
+.bar-code {
+  height: 105px;
+  margin-bottom: 5px; }

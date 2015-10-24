@@ -1,4 +1,4 @@
-angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate'])
+angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -184,10 +184,8 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate'])
   }
 })
 
-.controller('PickupCtrl', function($timeout) {
+.controller('PickupCtrl', function($timeout, $scope) {
   var vm = this;
-
-  var brCodeDOM = document.querySelector('#br_code');
 
   vm.loading = true;
   vm.completed = false;
@@ -201,7 +199,6 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate'])
   }, 1000);
 
   // todo get token from server
-  JsBarcode(brCodeDOM, 'asdfghj');
 })
 
 .service('ContactsState', function() {

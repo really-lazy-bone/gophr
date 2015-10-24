@@ -12,7 +12,8 @@
     <!-- BR Code -->
     <div>
       <ion-spinner icon="android" ng-show="pickup.loading"></ion-spinner>
-      <img id="br_code" ng-hide="pickup.loading || pickup.completed"></img>
+      <div class="bar-code" barcode-generator="12345678901234567890"
+        ng-hide="pickup.loading || pickup.completed"></div>
       <section class="completed" ng-show="pickup.completed">
         <div><i class="icon ion-android-done"></i></div>
       </section>
