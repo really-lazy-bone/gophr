@@ -4,89 +4,112 @@
  * Express Dependencies
  */
 var express = require('express');
+var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+
 var app = express();
 var port = 3000;
 
-/*
- * Use Handlebars for templating
- */
-var exphbs = require('express3-handlebars');
-var hbs;
+var Schema = mongoose.Schema;
 
-// For gzip compression
-app.use(express.compress());
+var OrderSchema = new Schema({
+    restaurant: String,
+    contacts: {
+        name: String,
+        creditCard: {
+            number: String,
+            expireDate: String,
+            cvv: String
+        },
+        orderItems: [
+            {
+                name: String,
+                quantity: Number,
+                value: Number
+            }
+        ]
+    },
+    lockedDateTime: Date,
+    pickupDateTime: Date,
+    state: String
+});
 
-var bodyParser = require('body-parser');
+var Order = mongoose.model('Order', OrderSchema);
+
+// set up connection to mongoDB
+mongoose.connect(
+	'mongodb://localhost/gophr',
+	{
+		server: {
+			socketOptions: {
+				connectTimeoeutMS: 10000,
+				keepAlive: 1
+			}
+		}
+	}
+);
+
+mongoose.connection.once('open', function() {
+	console.info(
+		'Connected to MongoDB'
+	);
+});
+
+mongoose.connection.on('error', function(err) {
+	console.error(
+		'Error happened in connection to MongoDB',
+		{
+			error: err
+		}
+	);
+});
 
 // parse json as body
 app.use(bodyParser.json());
 // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/test/", function (request, response) {
-    console.log("radsa");
-    response.json("hi there");
+app.get('/api/orders', function(req, res) {
+    Order.find({}, function(err, orders) {
+        if (err) {
+            res.status(503).end();
+            return;
+        }
+
+        res.json(orders);
+    });
+});
+app.get('/api/order/:orderId', function(req, res) {
+    ORder.findOne({_id: req.params.orderId}, function(err, order) {
+        if (err) {
+            res.status(503).end();
+            return;
+        }
+
+        if (!order) {
+            res.status(404).end();
+            return;
+        }
+
+        res.json(order);
+    });
+});
+app.get('/api/order/:orderId/checkout', function(req, res) {
+    // TODO: to be implemented
+    res.status(503).end();
+});
+app.post('/api/order/:orderId', function(req, res) {
+    var order = new Order(req.body);
+
+    order.save(function(err) {
+        if (err) {
+            res.status(503).end();
+            return;
+        }
+
+        res.status(200).end();
+    });
 });
 
-app.param(['id', 'page'], function (req, res, next) {
-  console.log(req.params.id + " : " + req.params.page);
-
-})
-
-app.get('/user/:id/:page', function (req, res, next) {
-  console.log(req.params.id + " : " + req.params.page);
-  res.end();
-});
-
-
-/*
- * Config for Production and Development
- */
-if (process.env.NODE_ENV === 'production') {
-    // Set the default layout and locate layouts and partials
-    app.engine('handlebars', exphbs({
-        defaultLayout: 'main',
-        layoutsDir: 'dist/views/layouts/',
-        partialsDir: 'dist/views/partials/'
-    }));
-
-    // Locate the views
-    app.set('views', __dirname + '/dist/views');
-    
-    // Locate the assets
-    app.use(express.static(__dirname + '/dist/assets'));
-
-} else {
-    app.engine('handlebars', exphbs({
-        // Default Layout and locate layouts and partials
-        defaultLayout: 'main',
-        layoutsDir: 'views/layouts/',
-        partialsDir: 'views/partials/'
-    }));
-
-    // Locate the views
-    app.set('views', __dirname + '/views');
-    
-    // Locate the assets
-    app.use(express.static(__dirname + '/assets'));
-}
-
-// Set Handlebars
-app.set('view engine', 'handlebars');
-
-
-
-/*
- * Routes
- */
-// Index Page
-app.get('/', function(request, response, next) {
-    response.render('index');
-});
-
-
-/*
- * Start it up
- */
 app.listen(process.env.PORT || port);
 console.log('Express started on port ' + port);
