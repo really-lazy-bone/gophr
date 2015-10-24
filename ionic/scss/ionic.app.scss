@@ -6,7 +6,6 @@ For example, you might change some of the default colors:
 
 $light:                           #fff !default;
 $stable:                          #f8f8f8 !default;
-$positive:                        #387ef5 !default;
 $calm:                            #11c1f3 !default;
 $balanced:                        #33cd5f !default;
 $energized:                       #ffc900 !default;
@@ -14,6 +13,17 @@ $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
+$positive: #42f6cb !default;
+$main: #42f6cb !default;
+$highlight: #fff238;
+$message-blue: #0078f6;
+$alert-red: #dc0032;
+$warning-orange: #f69d19;
+$n-01: #ededed;
+$n-02: #e1e2e4;
+$n-03: #d0d1d3;
+$n-06: #939498;
+$dark: #000;
 
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
@@ -21,3 +31,163 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+body,
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-size: 16px;
+  font-family: 'Avenir Next' !important;
+}
+
+input, button, select, textarea {
+  font-family: 'Avenir Next' !important;
+}
+
+.bar {
+  height: 64px;
+  background-color: $main;
+
+  .button:first-child {
+    margin-top: 12px;
+    margin-left: 8px;
+    font-weight: 500;
+  }
+
+  .title {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    color: #000 !important;
+    text-transform: uppercase;
+    line-height: 64px !important;
+    text-align: center !important;
+    right: 0 !important;
+    left: 0 !important;
+
+    & + .button:last-child {
+      top: 12px;
+      right: 12px;
+
+      &.text {
+        top: 16px;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.has-header {
+  top: 64px;
+}
+
+.search {
+  margin-bottom: 1.5em;
+}
+
+.button.button-main {
+  background-color: transparent;
+  border-color: $main;
+  border-width: 3px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.popup-container.confirmation {
+  .popup {
+    width: 200px;
+    border-radius: 25px;
+    background-color: $main;
+  }
+  .popup-head {
+    display: none;
+  }
+
+  .popup-body {
+    text-align: center;
+
+    i {
+      font-size: 120px;
+    }
+
+    div {
+      font-weight: bold;
+      font-size: 42px;
+      line-height: 42px;
+    }
+  }
+}
+
+.bar.bar-footer {
+  height: 48px;
+
+  .button {
+    margin: 0 !important;
+    font-size: 16px;
+    font-weight: 800;
+  }
+}
+
+.item-divider {
+  background: transparent;
+  font-weight: 800;
+  color: #000;
+  margin-top: 2em;
+  border-top: none;
+}
+
+.item {
+  color: #000;
+
+  &.item-button-right {
+    button.button-dark {
+      top: 0;
+      right: 0;
+    }
+  }
+}
+
+.item-note {
+  font-size: 13px;
+  color: #000;
+
+  &.warning {
+    color: $warning-orange;
+    font-weight: 600;
+  }
+}
+
+.pickup.container {
+  margin-top: 25px;
+  text-align: center;
+
+  img {
+    margin-bottom: .3125em;
+  }
+}
+
+.flex-item-meta {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  span:first-child {
+    margin-right: 2em;
+    padding: 0 .3em;
+    &.highlight {
+      background-color: $highlight;
+    }
+  }
+  span.description {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.total {
+    span.description {
+      font-weight: 700;
+    }
+  }
+}
