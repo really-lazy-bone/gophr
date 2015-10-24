@@ -9295,7 +9295,7 @@ input, button, select, textarea {
   font-family: 'Avenir Next' !important; }
 
 .bar {
-  height: 64px;
+  height: 54px;
   background-color: #42f6cb; }
   .bar .button:first-child {
     margin-top: 12px;
@@ -9318,7 +9318,7 @@ input, button, select, textarea {
         font-weight: 500; }
 
 .has-header {
-  top: 64px; }
+  top: 54px; }
 
 .search {
   margin-bottom: 1.5em; }
@@ -9331,9 +9331,10 @@ input, button, select, textarea {
   font-weight: bold; }
 
 .popup-container.confirmation .popup {
-  width: 200px;
-  border-radius: 25px;
-  background-color: #42f6cb; }
+  width: 125px;
+  border-radius: 20px;
+  background-color: #fff;
+  border: 5px solid #42f6cb; }
 
 .popup-container.confirmation .popup-head {
   display: none; }
@@ -9341,11 +9342,13 @@ input, button, select, textarea {
 .popup-container.confirmation .popup-body {
   text-align: center; }
   .popup-container.confirmation .popup-body i {
-    font-size: 120px; }
+    font-size: 63px;
+    color: #42f6cb; }
   .popup-container.confirmation .popup-body div {
     font-weight: bold;
-    font-size: 42px;
-    line-height: 42px; }
+    font-size: 26px;
+    line-height: 16px;
+    margin-bottom: 8px; }
 
 .bar.bar-footer {
   height: 48px; }
@@ -9399,3 +9402,24 @@ input, button, select, textarea {
     border-bottom: none; }
   .flex-item-meta.total span.description {
     font-weight: 700; }
+
+.optional {
+  color: #939498; }
+
+.spinner svg {
+  stroke: #42f6cb;
+  height: 38px;
+  width: 38px;
+  margin: 31px 0 36px 0; }
+
+.spinner {
+  height: 125px; }
+
+.completed {
+  margin: 46px 0 51px 0; }
+  .completed i {
+    font-size: 38px;
+    color: #42f6cb; }
+
+.loading svg {
+  margin: 0; }

@@ -24,6 +24,7 @@ $n-02: #e1e2e4;
 $n-03: #d0d1d3;
 $n-06: #939498;
 $dark: #000;
+$white: #fff;
 
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
@@ -42,7 +43,7 @@ input, button, select, textarea {
 }
 
 .bar {
-  height: 64px;
+  height: 54px;
   background-color: $main;
 
   .button:first-child {
@@ -74,7 +75,7 @@ input, button, select, textarea {
 }
 
 .has-header {
-  top: 64px;
+  top: 54px;
 }
 
 .search {
@@ -91,9 +92,10 @@ input, button, select, textarea {
 
 .popup-container.confirmation {
   .popup {
-    width: 200px;
-    border-radius: 25px;
-    background-color: $main;
+    width: 125px;
+    border-radius: 20px;
+    background-color: $white;
+    border: 5px solid $main;
   }
   .popup-head {
     display: none;
@@ -103,13 +105,15 @@ input, button, select, textarea {
     text-align: center;
 
     i {
-      font-size: 120px;
+      font-size: 63px;
+      color: $main;
     }
 
     div {
       font-weight: bold;
-      font-size: 42px;
-      line-height: 42px;
+      font-size: 26px;
+      line-height: 16px;
+      margin-bottom: 8px;
     }
   }
 }
@@ -189,5 +193,34 @@ input, button, select, textarea {
     span.description {
       font-weight: 700;
     }
+  }
+}
+
+.optional {
+  color: $n-06;
+}
+
+.spinner svg {
+  stroke: $main;
+  height: 38px;
+  width: 38px;
+  margin: 31px 0 36px 0;
+}
+
+.spinner {
+  height: 125px;
+}
+
+.completed {
+  margin: 46px 0 51px 0;
+  i {
+    font-size: 38px;
+    color: $main;
+  }
+}
+
+.loading {
+  svg {
+    margin: 0;
   }
 }

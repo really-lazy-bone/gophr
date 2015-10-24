@@ -8,7 +8,7 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate'])
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
     if(window.StatusBar) {
-      StatusBar.styleDefault();
+      StatusBar.backgroundColorByHexString('#42f6cb');
     }
   });
 })
@@ -37,22 +37,35 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate'])
       });;
   }])
 
-.controller('LocationPickerCtrl', function($scope, $ionicPopup, $timeout, $location) {
+.controller('LocationPickerCtrl', function($scope, $ionicPopup, $timeout, $location, ContactsState, $ionicLoading) {
   var vm = this;
+
+  vm.order = {
+    contacts: ContactsState.contacts
+  };
 
   vm.completeVoucher = completeVoucher;
 
   function completeVoucher () {
-    vm.completeModal = $ionicPopup.show({
-      template: '<div><i class="icon ion-android-done"></i></div>' +
-        '<div>Sent</div>',
+    vm.loadingModal = $ionicPopup.show({
+      template: '<ion-spinner icon="android"></ion-spinner>',
       cssClass: 'confirmation'
     });
 
     $timeout(function() {
-      vm.completeModal.close();
-      $location.path('/home');
-    }, 680);
+      vm.loadingModal.close();
+      vm.completeModal = $ionicPopup.show({
+        template: '<div><i class="icon ion-android-done"></i></div>' +
+          '<div>Sent</div>',
+        cssClass: 'confirmation'
+      });
+
+      $timeout(function() {
+        vm.completeModal.close();
+        $location.path('/home');
+      }, 1000);
+    }, 1000);
+
   }
 })
 
@@ -103,8 +116,9 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate'])
   }
 })
 
-.controller('NewPurchaseCtrl', function() {
+.controller('NewPurchaseCtrl', function(ContactsState, $location) {
   var vm = this;
+
 
   vm.groups = [
     {
@@ -133,19 +147,55 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate'])
     }
   ];
 
+  ContactsState.contacts.forEach(function(contact) {
+    vm.contacts.forEach(function(existingContact) {
+      if (contact.name === existingContact.name) {
+        existingContact.isSelected = true;
+      }
+    });
+  });
   vm.selectItem = selectItem;
+  vm.cancel = cancel;
+  vm.next = next;
 
   function selectItem (item) {
     item.isSelected = (item.isSelected) ? !item.isSelected : true;
   }
+
+  function cancel () {
+    ContactsState.contacts = [];
+    $location.path('/home');
+  }
+
+  function next () {
+    ContactsState.contacts = getSelectedItems();
+    $location.path('/location-picker');
+  }
+
+  function getSelectedItems () {
+    return vm.contacts.filter(function(contact) {
+      return contact.isSelected;
+    });
+  }
 })
 
-.controller('PickupCtrl', function() {
+.controller('PickupCtrl', function($ionicLoading, $timeout) {
   var vm = this;
 
   var brCodeDOM = document.querySelector('#br_code');
 
-  JsBarcode(brCodeDOM, 'test');
+  vm.loading = true;
+
+  $timeout(function() {
+    vm.loading = false;
+
+    // $timeout(function() {
+    //   vm.completed = true;
+    // }, 1000);
+  }, 1000);
+
+  // todo get token from server
+  JsBarcode(brCodeDOM, 'asdfghj');
 })
 
 .service('ContactsState', function() {
