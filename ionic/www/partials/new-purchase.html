@@ -14,7 +14,8 @@
 <ion-content>
   <div class="list">
     <label class="item item-input search">
-      <input type="text" placeholder="Search">
+      <input type="text" placeholder="Search"
+        ng-model="purchase.search">
     </label>
 
     <div class="item item-divider item-button-right">
@@ -23,33 +24,21 @@
         <i class="icon ion-ios-plus-empty"></i>
       </button>
     </div>
-
-    <div class="item">
-      Dev Team
-    </div>
-    <div class="item">
-      Sales Team
-    </div>
-    <div class="item">
-      Tech Support Team
+    <div class="item item-icon-right"
+      ng-repeat="group in purchase.groups | filter: purchase.search"
+      ng-click="purchase.selectItem(group)">
+      {{group.name}}
+      <i class="icon ion-ios-checkmark-empty" ng-show="group.isSelected"></i>
     </div>
 
     <div class="item item-divider">
       Contacts
     </div>
-
-    <div class="item">
-      Timothy
+    <div class="item item-icon-right"
+      ng-repeat="contact in purchase.contacts | filter: purchase.search"
+      ng-click="purchase.selectItem(contact)">
+      {{contact.name}}
+      <i class="icon ion-ios-checkmark-empty" ng-show="contact.isSelected"></i>
     </div>
-    <div class="item">
-      Eric
-    </div>
-    <div class="item">
-      Michael
-    </div>
-    <div class="item">
-      Pierre
-    </div>
-
   </div>
 </ion-content>

@@ -9365,7 +9365,7 @@ input, button, select, textarea {
   color: #000; }
   .item.item-button-right button.button-dark {
     top: 0;
-    right: 0; }
+    right: 5px; }
 
 .item-note {
   font-size: 13px;

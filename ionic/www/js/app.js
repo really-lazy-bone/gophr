@@ -21,7 +21,8 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate'])
         controller: 'HomeCtrl as home'
       })
       .when('/new-purchase', {
-        templateUrl: 'partials/new-purchase.html'
+        templateUrl: 'partials/new-purchase.html',
+        controller: 'NewPurchaseCtrl as purchase'
       })
       .when('/pickup/:id', {
         templateUrl: 'partials/pickup.html',
@@ -102,10 +103,53 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate'])
   }
 })
 
+.controller('NewPurchaseCtrl', function() {
+  var vm = this;
+
+  vm.groups = [
+    {
+      name: 'Dev team'
+    },
+    {
+      name: 'Sales'
+    },
+    {
+      name: 'Tech Supports'
+    }
+  ];
+
+  vm.contacts = [
+    {
+      name: 'Eric'
+    },
+    {
+      name: 'Michael'
+    },
+    {
+      name: 'Timothy'
+    },
+    {
+      name: 'Pierre'
+    }
+  ];
+
+  vm.selectItem = selectItem;
+
+  function selectItem (item) {
+    item.isSelected = (item.isSelected) ? !item.isSelected : true;
+  }
+})
+
 .controller('PickupCtrl', function() {
   var vm = this;
 
   var brCodeDOM = document.querySelector('#br_code');
 
   JsBarcode(brCodeDOM, 'test');
+})
+
+.service('ContactsState', function() {
+  return {
+    contacts: []
+  };
 })
