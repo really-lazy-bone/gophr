@@ -16,6 +16,29 @@ var hbs;
 // For gzip compression
 app.use(express.compress());
 
+var bodyParser = require('body-parser');
+
+// parse json as body
+app.use(bodyParser.json());
+// for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.get("/test/", function (request, response) {
+    console.log("radsa");
+    response.json("hi there");
+});
+
+app.param(['id', 'page'], function (req, res, next) {
+  console.log(req.params.id + " : " + req.params.page);
+
+})
+
+app.get('/user/:id/:page', function (req, res, next) {
+  console.log(req.params.id + " : " + req.params.page);
+  res.end();
+});
+
+
 /*
  * Config for Production and Development
  */
