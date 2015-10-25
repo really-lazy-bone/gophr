@@ -1,12 +1,6 @@
 package com.gophr.gophr;
 
-import static com.gophr.gophr.Constants.FIRST_COLUMN;
-import static com.gophr.gophr.Constants.SECOND_COLUMN;
-import static com.gophr.gophr.Constants.THIRD_COLUMN;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -46,11 +40,8 @@ public class ListViewAdapter extends BaseAdapter{
         return 0;
     }
 
-
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
 
         LayoutInflater inflater=activity.getLayoutInflater();
 
@@ -64,7 +55,6 @@ public class ListViewAdapter extends BaseAdapter{
 
         }
 
-//        HashMap<String, String> map=list.get(position);
         Item item = items.get(position);
         txtFirst.setText("" + item.getQuantity());
         txtSecond.setText(item.getName());
@@ -72,5 +62,4 @@ public class ListViewAdapter extends BaseAdapter{
 
         return convertView;
     }
-
 }
