@@ -45,6 +45,8 @@ public class MainActivity extends Activity {
         public void onReceive(Context context, Intent intent) {
             String barcode = intent.getStringExtra("Barcode");
             resultTV.setText("Result: " + barcode);
+            Intent intent1 = new Intent(MainActivity.this, SimpleListViewActivity.class);
+            startActivity(intent1);
         }
     };
 
@@ -81,7 +83,6 @@ public class MainActivity extends Activity {
                 mBarcodeScanner.executeStopScan(null);
             }
         });
-
     }
 
     @Override

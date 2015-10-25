@@ -24,6 +24,11 @@ xmlns:tools="http://schemas.android.com/tools">
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
+
+    <activity
+        android:name="com.gophr.gophr.SimpleListViewActivity"
+        android:label="@string/app_name" >
+    </activity>
 </application>
 
 </manifest>
