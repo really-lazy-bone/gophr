@@ -15,11 +15,17 @@ import java.net.HttpURLConnection;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.Button;
 
 import java.io.InputStreamReader;
 import java.io.InputStream;
 import java.io.BufferedReader;
+
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.view.View.OnClickListener;
 
 import android.os.StrictMode;
 
@@ -31,10 +37,12 @@ public class SimpleListViewActivity extends Activity {
     private ArrayList<HashMap<String, String>> list;
     private List<Item> items = new ArrayList<>();
     private double tip;
-    private double total;
+    final Context context = this;
 
     TextView tipAmount;
     TextView totalAmount;
+
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +79,47 @@ public class SimpleListViewActivity extends Activity {
 
         tipAmount.setText("Tip: $" + String.format("%.02f", tip));
         totalAmount.setText("Total: $" + String.format("%.02f", getTotal(items) + tip));
+
+        button = (Button) findViewById(R.id.confirmButton);
+
+        // add button listener
+        button.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        context);
+
+                // set title
+                alertDialogBuilder.setTitle(" ");
+
+                // set dialog message
+                alertDialogBuilder
+                        .setMessage("Transaction Completed")
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // if this button is clicked, close
+                                // current activity
+                                SimpleListViewActivity.this.finish();
+                            }
+                        });
+//                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+//                                // if this button is clicked, just close
+//                                // the dialog box and do nothing
+//                                dialog.cancel();
+//                            }
+//                        });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+            }
+        });
 
     }
 

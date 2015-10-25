@@ -37,6 +37,7 @@ public class MainActivity extends Activity {
             String barcode = intent.getStringExtra("Barcode");
             Intent intent1 = new Intent(MainActivity.this, SimpleListViewActivity.class);
             intent1.putExtra("barcode",barcode);
+
             startActivity(intent1);
         }
     };
@@ -44,6 +45,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        Intent intent1 = new Intent(MainActivity.this, CashEventTestActivity.class);
+//        startActivity(intent1);
+//
         setContentView(R.layout.activity_barcode_scanner);
 
         mBarcodeScanner = new BarcodeScanner(this);

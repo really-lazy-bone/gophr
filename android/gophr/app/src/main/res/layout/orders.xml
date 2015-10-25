@@ -33,4 +33,12 @@
         android:padding="16dp"
         />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="120sp"
+        android:text="Confirm"
+        android:id="@+id/confirmButton"
+        android:layout_gravity="center_horizontal"
+        android:textSize="50sp" />
+
 </LinearLayout>
