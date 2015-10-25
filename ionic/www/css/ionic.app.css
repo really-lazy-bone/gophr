@@ -9383,6 +9383,19 @@ input, button, select, textarea {
   .pickup.container img {
     margin-bottom: .3125em; }
 
+.flex-menu-item {
+  display: flex;
+  line-height: 32px; }
+  .flex-menu-item span:first-child {
+    margin-right: 1em; }
+    .flex-menu-item span:first-child .button.button-outline {
+      margin: 0 0.5em; }
+  .flex-menu-item span.description {
+    flex: 1; }
+
+.last {
+  border-bottom: none; }
+
 .flex-item-meta {
   display: -webkit-box;
   display: -webkit-flex;
@@ -9427,3 +9440,9 @@ input, button, select, textarea {
 .bar-code {
   height: 105px;
   margin-bottom: 5px; }
+
+.no-up-border {
+  border-top: none; }
+
+.item-avatar h2 {
+  font-weight: 700; }

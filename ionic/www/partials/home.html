@@ -18,7 +18,7 @@
       Pending
     </div>
     <a ng-href="#/pickup/{{item._id}}" class="item"
-      ng-repeat="item in home.getPendingList() | filter: home.search">
+      ng-repeat="item in home.getPendingList() | filter: home.search | orderBy: '-pickupDateTime'">
       {{item.restaurant}}
       <span class="item-note warning">
         {{item.pickupDateTime | relativeDate}}

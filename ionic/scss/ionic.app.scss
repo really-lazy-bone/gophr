@@ -166,6 +166,24 @@ input, button, select, textarea {
   }
 }
 
+.flex-menu-item {
+  display: flex;
+  line-height: 32px;
+  span:first-child {
+    margin-right: 1em;
+    .button.button-outline {
+      margin: 0 .5em;
+    }
+  }
+  span.description {
+    flex: 1;
+  }
+}
+
+.last {
+  border-bottom: none;
+}
+
 .flex-item-meta {
   display: -webkit-box;
   display: -webkit-flex;
@@ -228,4 +246,14 @@ input, button, select, textarea {
 .bar-code {
   height: 105px;
   margin-bottom: 5px;
+}
+
+.no-up-border {
+  border-top: none;
+}
+
+.item-avatar {
+  h2 {
+    font-weight: 700;
+  }
 }

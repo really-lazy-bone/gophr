@@ -3,7 +3,10 @@
 // TODO: change this to productional address later
 var SERVER_ADDRESS = 'http://2d240713.ngrok.io';
 
-angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator'])
+// hardcoded username to demonstrate user system
+var USER_NAME = 'Eric';
+
+angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator', 'angular.filter'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -24,13 +27,17 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator']
         templateUrl: 'partials/new-purchase.html',
         controller: 'NewPurchaseCtrl as purchase'
       })
+      .when('/location-picker', {
+        templateUrl: 'partials/location-picker.html',
+        controller: 'LocationPickerCtrl as location'
+      })
       .when('/pickup/:id', {
         templateUrl: 'partials/pickup.html',
         controller: 'PickupCtrl as pickup'
       })
-      .when('/location-picker', {
-        templateUrl: 'partials/location-picker.html',
-        controller: 'LocationPickerCtrl as location'
+      .when('/restaurant-menu/:orderId/:userContactId', {
+        templateUrl: 'partials/restaurant-menu.html',
+        controller: 'RestaurantMenuCtrl as menu'
       })
       .otherwise({
         redirectTo: '/home'
@@ -177,6 +184,10 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator']
   $http.get(SERVER_ADDRESS + '/api/order/' +$routeParams.id)
     .then(function(response) {
       vm.order = response.data;
+
+      vm.userContact = vm.order.contacts.filter(function(contact) {
+        return contact.name === USER_NAME;
+      })[0];
     });
 
   vm.loading = true;
@@ -189,8 +200,121 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator']
     //   vm.completed = true;
     // }, 1000);
   }, 1000);
+})
 
-  // todo get token from server
+.controller('RestaurantMenuCtrl', function($ionicPopup, $http, $routeParams, $location) {
+  var vm = this;
+
+  $http.get(SERVER_ADDRESS + '/api/order/' + $routeParams.orderId)
+    .then(function(response) {
+      vm.order = response.data;
+
+      vm.currentContact = vm.order.contacts.filter(function(contact) {
+        return contact.id == $routeParams.contactId;
+      })[0];
+    });
+
+  $http.get(SERVER_ADDRESS + '/api/restaurant/menu')
+    .then(function(response) {
+      vm.menuItems = response.data;
+    });
+
+  vm.setTip = setTip;
+  vm.promptCreditCard = promptCreditCard;
+  vm.getTotal = getTotal;
+  vm.addItem = addItem;
+  vm.removeItem = removeItem;
+  vm.getItemCount = getItemCount;
+  vm.checkout = checkout;
+  vm.goBack = goBack;
+
+  function setTip (tip) {
+    vm.tip = tip;
+
+    if (vm.currentContact) {
+      vm.currentContact.tip = vm.currentContact.orderItems.reduce(function(total, item) {
+        return total + item.price * item.quantity;
+      }, 0) * (tip) / 100;
+    }
+  }
+
+  function promptCreditCard () {
+    $ionicPopup.prompt({
+      title: 'Credit Card',
+      template: 'Enter your credit card',
+      inputType: 'text',
+      inputPlaceholder: '2222-2222-2222'
+    }).then(function(res) {
+      console.log('Your password is', res);
+    });
+  }
+
+  function getTotal () {
+    if (vm.currentContact) {
+      var tip = (vm.tip) ? vm.tip : 0;
+      return vm.currentContact.orderItems.reduce(function(total, item) {
+        return total + item.price * item.quantity;
+      }, 0) * (100 + tip) / 100;
+    } else {
+      return 0;
+    }
+  }
+
+  function addItem (item) {
+    var containItem = vm.currentContact.orderItems.filter(function(orderItem, index) {
+      return orderItem.name === item.name;
+    }).length > 0;
+
+    if (containItem) {
+      vm.currentContact.orderItems.forEach(function(orderItem) {
+        if (orderItem.name === item.name) {
+          orderItem.quantity ++;
+        }
+      });
+    } else {
+      var newItem = angular.copy(item);
+      newItem.quantity = 1;
+      vm.currentContact.orderItems.push(newItem);
+    }
+  }
+
+  function removeItem (item) {
+    var containItem = vm.currentContact.orderItems.filter(function(orderItem, index) {
+      return orderItem.name === item.name;
+    }).length > 0;
+
+    if (containItem) {
+      vm.currentContact.orderItems.forEach(function(orderItem) {
+        if (orderItem.name === item.name) {
+          orderItem.quantity --;
+        }
+      });
+    }
+  }
+
+  function getItemCount (item) {
+    if (vm.currentContact) {
+      var theItem = vm.currentContact.orderItems.filter(function(orderItem, index) {
+        return orderItem.name === item.name;
+      })[0];
+
+      return (theItem && theItem.quantity) ? theItem.quantity : 0;
+    } else {
+      return 0;
+    }
+  }
+
+  function checkout () {
+    $http.post(SERVER_ADDRESS + '/api/order/' + $routeParams.orderId + '/checkout', vm.currentContact)
+      .then(function() {
+        $location.path('/home');
+      });
+  }
+
+  function goBack (event) {
+    event.stopPropagation();
+    $location.path('/home');
+  }
 })
 
 .service('ContactsState', function() {

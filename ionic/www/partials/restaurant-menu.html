@@ -1,0 +1,83 @@
+<ion-header-bar class="bar bar-header">
+  <!-- ng-click="menu.promptCreditCard()"> -->
+  <a href="javascript:void(0)"
+    ng-click="menu.goBack($event)"
+    class="button-clear button button-dark text">
+    back
+  </a>
+  <h1 class="title">
+    {{menu.getTotal() | currency}}
+    <i class="icon ion-card"></i>
+  </h1>
+  <a href="javascript:void(0)"
+    class="button-clear button button-dark text"
+    ng-hide="menu.getTotal() > 0">
+    decline
+  </a>
+</ion-header-bar>
+<ion-content>
+  <div class="list">
+    <a class="item item-avatar" href="javascript:void(0)">
+      <!-- Randomly hardcoded restaurant picture -->
+      <img src="http://globe-views.com/dcim/dreams/restaurant/restaurant-05.jpg">
+      <span class="item-note">
+        {{menu.order.pickupDateTime | relativeDate}}
+      </span>
+      <h2>{{menu.order.restaurant}}</h2>
+      <p>{{menu.order.pickupDateTime | date: 'shortTime'}} pickup</p>
+    </a>
+
+    <div ng-repeat="(key, value) in menu.menuItems | groupBy: 'category'">
+      <div class="item item-divider">
+        {{key}}
+      </div>
+      <a class="item flex-menu-item" ng-repeat="item in value"
+        ng-class="{
+          'no-up-border': $first
+        }">
+        <!-- qty, item name, amount -->
+        <span>
+          <button class="button button-small button-outline button-dark"
+            ng-click="menu.removeItem(item)">
+            <i class="icon ion-ios-minus-empty"></i>
+          </button>
+          {{menu.getItemCount(item)}}
+          <button class="button button-small button-outline button-dark"
+            ng-click="menu.addItem(item)">
+            <i class="icon ion-ios-plus-empty"></i>
+          </button>
+        </span>
+        <span class="description">
+          {{item.name}}
+        </span>
+        <span>
+          {{item.price | currency}}
+        </span>
+      </a>
+    </div>
+
+    <div class="item item-divider">
+      Tip
+    </div>
+    <div class="last item no-up-border">
+      <div class="button-bar">
+        <a class="button"
+          ng-class="{'active': menu.tip === 12}"
+          ng-click="menu.setTip(12)">12%</a>
+        <a class="button"
+          ng-class="{'active': menu.tip === 15}"
+          ng-click="menu.setTip(15)">15%</a>
+        <a class="button"
+          ng-class="{'active': menu.tip === 20}"
+          ng-click="menu.setTip(20)">20%</a>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<div class="bar bar-footer">
+  <button class="button button-block button-main"
+    ng-click="menu.checkout()"
+    ng-disabled="menu.getTotal() === 0">
+    Check out
+  </button>
+</div>

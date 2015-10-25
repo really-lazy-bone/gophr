@@ -25,9 +25,10 @@ var OrderSchema = new Schema({
             {
                 name: String,
                 quantity: Number,
-                value: Number
+                price: Number
             }
-        ]
+        ],
+        tip: Number
     }],
     lockedDateTime: Date,
     pickupDateTime: Date,
@@ -69,6 +70,66 @@ app.use(bodyParser.json());
 // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('/api/restaurant/menu', function(req, res) {
+    var menu = [
+    	{
+    		category: "Sandwiches",
+    		name: "Bacon Panini",
+    		price: 10.95
+    	},
+    	{
+    		category: "Sandwiches",
+    		name: "Roast Beef",
+    		price: 10.05
+    	},
+    	{
+    		category: "Sandwiches",
+    		name: "Classic Reuben",
+    		price: 10.95
+    	},
+    	{
+    		category: "Entrée",
+    		name: "Dry-Aged Steak",
+    		price: 20.99
+    	},
+    	{
+    		category: "Entrée",
+    		name: "Meatballs and Pasta",
+    		price: 7.95
+    	},
+    	{
+    		category: "Entrée",
+    		name: "Lobster Tail",
+    		price: 30.99
+    	},
+
+    	{
+    		category: "Cocktails",
+    		name: "Bloody Mary",
+    		price: 10.95
+    	},
+
+    	{
+    		category: "Cocktails",
+    		name: "Vodka Redbull",
+    		price: 10.95
+    	},
+    	{
+    		category: "Cocktails",
+    		name: "Rum and Coke",
+    		price: 9.98
+    	},
+    	{
+    		category: "Cocktails",
+    		name: "Gin and Tonic",
+    		price: 10.95
+    	}
+
+    ];
+
+    res.json(menu);
+});
+
 app.get('/api/orders', function(req, res) {
     Order.find({}, function(err, orders) {
         if (err) {
@@ -94,9 +155,38 @@ app.get('/api/order/:orderId', function(req, res) {
         res.json(order);
     });
 });
-app.get('/api/order/:orderId/checkout', function(req, res) {
-    // TODO: to be implemented
-    res.status(503).end();
+app.post('/api/order/:orderId/checkout', function(req, res) {
+    Order.findOne({_id: req.params.orderId}, function(err, order){
+        if (err) {
+            res.status(503).end();
+            return;
+        }
+
+        if (!order) {
+            res.status(404).end();
+            return;
+        }
+
+        var contactIndex = -1;
+
+        order.contacts.forEach(function(contact, index) {
+            if (contact._id == req.body._id) {
+                contactIndex = index;
+            }
+        });
+
+        order.contacts[contactIndex].orderItems = req.body.orderItems;
+        order.contacts[contactIndex].tip = req.body.tip;
+
+        order.save(function(err) {
+            if (err) {
+                res.status(503).end();
+                return;
+            }
+
+            res.status(200).end();
+        })
+    });
 });
 app.post('/api/order', function(req, res) {
     var order = new Order(req.body);

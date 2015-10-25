@@ -32,8 +32,13 @@
   </section>
 
   <div class="list">
-    <div class="item item-divider">
+    <div class="item item-divider item-button-right">
       Items
+      <a class="button button-clear button-dark"
+        ng-href="#/restaurant-menu/{{pickup.order._id}}/{{pickup.userContact._id}}"
+        ng-show="pickup.userContact">
+        <i class="icon ion-ios-plus-empty"></i>
+      </a>
     </div>
 
     <a class="item flex-item-meta">
