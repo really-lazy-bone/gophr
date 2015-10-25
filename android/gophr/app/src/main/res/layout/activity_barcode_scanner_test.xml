@@ -27,34 +27,12 @@
     tools:context=".MerchantTestActivity">
 
 
-  <CheckBox
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="scan QRCODE"
-      android:id="@+id/checkBoxQRCode" android:checked="true"/>
-
-  <CheckBox
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="scan 1D CODE"
-      android:id="@+id/checkBox1DCode" android:checked="true"/>
-
-  <Button
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Start Barcode scanner"
+    <Button
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:text="scan"
       android:id="@+id/start"
-      android:layout_gravity="left|center_vertical"/>
+      android:layout_gravity="left|center_vertical"
+        android:textSize="100dp" />
 
-  <Button
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Stop Barcode scanner"
-      android:id="@+id/stop"
-      android:layout_gravity="left|center_vertical"/>
-
-  <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:paddingTop="50dp"
-            android:text="Result: "
-      android:id="@+id/resultTV"/>
 </LinearLayout>

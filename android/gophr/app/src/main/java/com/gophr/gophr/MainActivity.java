@@ -38,13 +38,11 @@ public class MainActivity extends Activity {
 
     private CheckBox qrCode;
     private CheckBox code1D;
-    private TextView resultTV;
 
     private BroadcastReceiver barcodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String barcode = intent.getStringExtra("Barcode");
-            resultTV.setText("Result: " + barcode);
             Intent intent1 = new Intent(MainActivity.this, SimpleListViewActivity.class);
             startActivity(intent1);
         }
@@ -55,10 +53,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barcode_scanner_test);
 
-        qrCode = (CheckBox) findViewById(R.id.checkBoxQRCode);
-        code1D = (CheckBox) findViewById(R.id.checkBox1DCode);
-
-        resultTV = (TextView) findViewById(R.id.resultTV);
 
         mBarcodeScanner = new BarcodeScanner(this);
 
@@ -67,20 +61,8 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Bundle extras = new Bundle();
-                extras.putBoolean(Intents.EXTRA_LED_ON, false);
-                extras.putBoolean(Intents.EXTRA_SCAN_QR_CODE, qrCode.isChecked());
-                extras.putBoolean(Intents.EXTRA_SCAN_1D_CODE, code1D.isChecked());
+                extras.putBoolean(Intents.EXTRA_SCAN_1D_CODE, true);
                 mBarcodeScanner.executeStartScan(extras);
-
-                resultTV.setText("");
-            }
-        });
-
-        Button stop = (Button) findViewById(R.id.stop);
-        stop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBarcodeScanner.executeStopScan(null);
             }
         });
     }
