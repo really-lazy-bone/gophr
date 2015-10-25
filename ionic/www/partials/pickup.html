@@ -41,19 +41,24 @@
       </a>
     </div>
 
-    <a class="item flex-item-meta"
+    <div class="item flex-item-meta"
+      ng-class="{
+        'first': $first
+      }"
       ng-repeat="item in pickup.shoppinglist">
-      <span>{{item.quantity}}</span>
+      <span ng-class="{
+        'highlight': item.quantity > 1
+      }">{{item.quantity}}</span>
       <span class="description">{{item.name}}</span>
       <span>{{item.price | currency}}</span>
-    </a>
-    <a class="item flex-item-meta total">
+    </div>
+    <div class="item flex-item-meta total">
       <span class="description">Tip</span>
       <span>{{pickup.tip | currency}}</span>
-    </a>
-    <a class="item flex-item-meta total">
+    </div>
+    <div class="item flex-item-meta total no-up-border no-bottom-border">
       <span class="description">Total</span>
       <span>{{pickup.getTotal() | currency}}</span>
-    </a>
+    </div>
   </div>
 </ion-content>

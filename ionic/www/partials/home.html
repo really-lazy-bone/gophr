@@ -18,9 +18,16 @@
       Pending
     </div>
     <a ng-href="#/pickup/{{item._id}}" class="item"
-      ng-repeat="item in home.getPendingList() | filter: home.search | orderBy: '-pickupDateTime'">
+      ng-class="{
+        'no-up-border': $first
+      }"
+      ng-repeat="item in home.getPendingList() | filter: home.search | orderBy: 'pickupDateTime'">
       {{item.restaurant}}
-      <span class="item-note warning">
+      <span class="item-note"
+        ng-class="{
+          'warning': home.isLessThan5(item.pickupDateTime),
+          'error': home.isPast(item.pickupDateTime)
+        }">
         {{item.pickupDateTime | relativeDate}}
       </span>
     </a>

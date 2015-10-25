@@ -10,6 +10,18 @@ var mongoose = require('mongoose');
 var app = express();
 var port = 3000;
 
+var server = require('http').Server(app);
+
+var io = require('socket.io')(server);
+
+io.on('connection', function(socket) {
+    console.log(socket);
+    socket.emit('message', {hello: 'world'});
+});
+
+server.listen(port);
+console.log('Express started on port ' + port);
+
 var Schema = mongoose.Schema;
 
 var OrderSchema = new Schema({
@@ -125,7 +137,6 @@ app.get('/api/restaurant/menu', function(req, res) {
     		name: "Gin and Tonic",
     		price: 10.95
     	}
-
     ];
 
     res.json(menu);
@@ -244,6 +255,8 @@ app.post('/api/order', function(req, res) {
         }
 
         res.status(200).end();
+
+        io.emit('invite', order);
     });
 });
 
@@ -255,6 +268,3 @@ function LeftPadWithZeros(number, length) {
 
     return str;
 }
-
-app.listen(process.env.PORT || port);
-console.log('Express started on port ' + port);

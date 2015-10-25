@@ -41,7 +41,7 @@
 
 <div class="bar bar-footer">
   <button class="button button-block button-main"
-    ng-click="location.completeVoucher()"
+    ng-click="location.completeVoucher($event)"
     ng-disabled="!location.order.restaurant || !location.order.pickupDateTime">
     Send invite to {{location.order.contacts.length}} people
   </button>

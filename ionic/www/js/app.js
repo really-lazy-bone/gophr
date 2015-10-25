@@ -16,6 +16,39 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
   });
 })
 
+.run(function($ionicPopup, $timeout, $location) {
+  var socket = io.connect(SERVER_ADDRESS);
+
+  socket.on('connected', function(socket) {
+    console.log('connected to server via socket io');
+  });
+
+  socket.on('invite', function(data) {
+    var contactId = data.contacts.filter(function(contact) {
+      return contact.name === USER_NAME;
+    })[0]._id;
+    if (contactId) {
+      $timeout(function() {
+        var alertPopup = $ionicPopup.show({
+          templateUrl: 'partials/message.html',
+          title: 'Invite',
+          cssClass: 'message',
+          buttons: [
+            { text: 'Ignore' },
+            {
+              text: '<b>Accept</b>',
+              type: 'button-main',
+              onTap: function(e) {
+                $location.path('/restaurant-menu/' + data._id + '/' + contactId);
+              }
+            }
+          ]
+        });
+      }, 3500);
+    }
+  });
+})
+
 .config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
     $routeProvider
@@ -44,7 +77,7 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
       });;
   }])
 
-.controller('HomeCtrl', function($http) {
+.controller('HomeCtrl', function($http, $ionicPopup) {
   var vm = this;
 
   vm.orders = [];
@@ -58,6 +91,17 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
 
   vm.getPendingList = getPendingList;
   vm.getCompletedList = getCompletedList;
+  vm.isLessThan5 = isLessThan5;
+  vm.isPast = isPast;
+
+  function isLessThan5 (time) {
+    return (new Date(time).getTime() - new Date().getTime()) > 0 &&
+      (new Date(time).getTime() - new Date().getTime()) < 300000;
+  }
+
+  function isPast (time) {
+    return new Date(time).getTime() - new Date().getTime() < 0;
+  }
 
   function getPendingList () {
     return vm.orders.filter(function(order) {
@@ -91,6 +135,10 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
   vm.contacts = [
     {
       name: 'Eric'
+    },
+    {
+      name: 'Bruce',
+      profileUrl: 'http://www.money2020.com/assets/hackjudges/dragt_bruce.png'
     },
     {
       name: 'Michael'
@@ -176,7 +224,9 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
     return d;
   }
 
-  function completeVoucher () {
+  function completeVoucher (event) {
+    event.stopPropagation();
+
     vm.loadingModal = $ionicPopup.show({
       template: '<ion-spinner icon="android"></ion-spinner>',
       cssClass: 'confirmation'
@@ -239,9 +289,13 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
   }, 1000);
 
   function getTotal () {
-    return vm.shoppinglist.reduce(function(total, item) {
-      return total + item.quantity * item.price;
-    }, vm.tip);
+    if (vm.shoppinglist) {
+      return vm.shoppinglist.reduce(function(total, item) {
+        return total + item.quantity * item.price;
+      }, vm.tip);
+    } else {
+      return 0;
+    }
   }
 })
 
@@ -358,6 +412,10 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
     event.stopPropagation();
     $location.path('/home');
   }
+})
+
+.controller('MessageCtrl', function() {
+  var vm = this;
 })
 
 .service('ContactsState', function() {

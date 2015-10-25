@@ -26,9 +26,15 @@
         <i class="icon ion-ios-plus-empty"></i>
       </button>
     </div>
-    <div class="item item-icon-right"
+    <div class="item item-avatar user item-icon-right"
+      ng-class="{
+        'no-up-border': $first
+      }"
       ng-repeat="group in purchase.groups | filter: purchase.search"
       ng-click="purchase.selectItem(group)">
+      <img ng-src="{{group.profileUrl}}"
+        ng-show="group.profileUrl">
+      <div class="profile-placeholder" ng-show="!group.profileUrl"></div>
       {{group.name}}
       <i class="icon ion-ios-checkmark-empty" ng-show="group.isSelected"></i>
     </div>
@@ -36,9 +42,15 @@
     <div class="item item-divider">
       Contacts
     </div>
-    <div class="item item-icon-right"
+    <div class="item item-avatar user item-icon-right"
+      ng-class="{
+        'no-up-border': $first
+      }"
       ng-repeat="contact in purchase.contacts | filter: purchase.search"
       ng-click="purchase.selectItem(contact)">
+      <img ng-src="{{contact.profileUrl}}"
+        ng-show="contact.profileUrl">
+      <div class="profile-placeholder" ng-show="!contact.profileUrl"></div>
       {{contact.name}}
       <i class="icon ion-ios-checkmark-empty" ng-show="contact.isSelected"></i>
     </div>
