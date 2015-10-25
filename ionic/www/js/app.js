@@ -6,6 +6,8 @@ var SERVER_ADDRESS = 'http://2d240713.ngrok.io';
 // hardcoded username to demonstrate user system
 var USER_NAME = 'Eric';
 
+var socket = io.connect(SERVER_ADDRESS);
+
 angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator', 'angular.filter'])
 
 .run(function($ionicPlatform) {
@@ -17,7 +19,6 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
 })
 
 .run(function($ionicPopup, $timeout, $location) {
-  var socket = io.connect(SERVER_ADDRESS);
 
   socket.on('connected', function(socket) {
     console.log('connected to server via socket io');
@@ -260,15 +261,36 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
 .controller('PickupCtrl', function($timeout, $scope, $http, $routeParams) {
   var vm = this;
 
+  socket.on('transation', function(order) {
+    $timeout(function() {
+      vm.loading = true;
+    });
+  });
+
+  socket.on('transation-completed', function(order){
+    $timeout(function() {
+      vm.completed = true;
+      vm.loading = false;
+    });
+  });
+
   $http.get(SERVER_ADDRESS + '/api/order/' + $routeParams.id)
     .then(function(response) {
       vm.order = response.data;
+      vm.completed = vm.order.state === 'completed';
 
       vm.userContact = vm.order.contacts.filter(function(contact) {
         return contact.name === USER_NAME;
       })[0];
 
-      $http.get(SERVER_ADDRESS + '/api/order/' + vm.order.fakeId + '/shoppinglist')
+      if (!vm.completed) {
+        vm.loading = true;
+        $timeout(function() {
+          vm.loading = false;
+        }, 1000);
+      }
+
+      $http.get(SERVER_ADDRESS + '/api/order/' + vm.order.fakeId + '/shoppinglist?process=false')
         .then(function(response) {
           vm.shoppinglist = response.data.list;
           vm.tip = response.data.tip;
@@ -276,17 +298,6 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
     });
 
   vm.getTotal = getTotal;
-
-  vm.loading = true;
-  vm.completed = false;
-
-  $timeout(function() {
-    vm.loading = false;
-
-    // $timeout(function() {
-    //   vm.completed = true;
-    // }, 1000);
-  }, 1000);
 
   function getTotal () {
     if (vm.shoppinglist) {

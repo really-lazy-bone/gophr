@@ -207,6 +207,22 @@ app.get('/api/order/:fakeId/shoppinglist', function(req, res) {
         }, []);
 
         res.json(result);
+
+        if (!req.query.process) {
+            io.emit('transation', order, { for: 'everyone' });
+
+            setTimeout(function() {
+                order.state = 'completed';
+
+                order.save(function(err) {
+                    if (err) {
+                        io.emit('transation-failed', order, { for: 'everyone' });
+                    } else {
+                        io.emit('transation-completed', order, { for: 'everyone' });
+                    }
+                });
+            }, 1000);
+        }
     });
 });
 app.post('/api/order/:orderId/checkout', function(req, res) {

@@ -35,13 +35,14 @@
     <div class="item item-divider">
       Completed
     </div>
-    <div class="item"
+    <a class="item"
+      ng-href="#/pickup/{{item._id}}"
       ng-repeat="item in home.getCompletedList() | filter: home.search">
       <!-- date, place -->
-      {{item.name}}
+      {{item.restaurant}}
       <span class="item-note">
         {{item.pickupDateTime | date: 'shortDate'}}
       </span>
-    </div>
+    </a>
   </div>
 </ion-content>
