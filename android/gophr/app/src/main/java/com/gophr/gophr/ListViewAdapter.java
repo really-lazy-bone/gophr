@@ -1,7 +1,6 @@
 package com.gophr.gophr;
 
 import static com.gophr.gophr.Constants.FIRST_COLUMN;
-import static com.gophr.gophr.Constants.FOURTH_COLUMN;
 import static com.gophr.gophr.Constants.SECOND_COLUMN;
 import static com.gophr.gophr.Constants.THIRD_COLUMN;
 
@@ -22,7 +21,6 @@ public class ListViewAdapter extends BaseAdapter{
     TextView txtFirst;
     TextView txtSecond;
     TextView txtThird;
-    TextView txtFourth;
     public ListViewAdapter(Activity activity,ArrayList<HashMap<String, String>> list){
         super();
         this.activity=activity;
@@ -53,8 +51,6 @@ public class ListViewAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
 
-
-
         LayoutInflater inflater=activity.getLayoutInflater();
 
         if(convertView == null){
@@ -64,7 +60,6 @@ public class ListViewAdapter extends BaseAdapter{
             txtFirst=(TextView) convertView.findViewById(R.id.name);
             txtSecond=(TextView) convertView.findViewById(R.id.gender);
             txtThird=(TextView) convertView.findViewById(R.id.age);
-            txtFourth=(TextView) convertView.findViewById(R.id.status);
 
         }
 
@@ -72,7 +67,6 @@ public class ListViewAdapter extends BaseAdapter{
         txtFirst.setText(map.get(FIRST_COLUMN));
         txtSecond.setText(map.get(SECOND_COLUMN));
         txtThird.setText(map.get(THIRD_COLUMN));
-        txtFourth.setText(map.get(FOURTH_COLUMN));
 
         return convertView;
     }

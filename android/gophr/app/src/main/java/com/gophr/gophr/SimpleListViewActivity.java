@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import static com.gophr.gophr.Constants.FIRST_COLUMN;
-import static com.gophr.gophr.Constants.FOURTH_COLUMN;
 import static com.gophr.gophr.Constants.SECOND_COLUMN;
 import static com.gophr.gophr.Constants.THIRD_COLUMN;
 
@@ -26,9 +25,6 @@ import android.widget.Toast;
  * Created by tmitim_air on 10/24/15.
  */
 public class SimpleListViewActivity extends Activity {
-//
-//    private ListView mainListView ;
-//    private ArrayAdapter<String> listAdapter ;
 
     private ArrayList<HashMap<String, String>> list;
 
@@ -45,21 +41,18 @@ public class SimpleListViewActivity extends Activity {
         temp.put(FIRST_COLUMN, "Ankit Karia");
         temp.put(SECOND_COLUMN, "Male");
         temp.put(THIRD_COLUMN, "22");
-        temp.put(FOURTH_COLUMN, "Unmarried");
         list.add(temp);
 
         HashMap<String,String> temp2=new HashMap<String, String>();
         temp2.put(FIRST_COLUMN, "Rajat Ghai");
         temp2.put(SECOND_COLUMN, "Male");
         temp2.put(THIRD_COLUMN, "25");
-        temp2.put(FOURTH_COLUMN, "Unmarried");
         list.add(temp2);
 
         HashMap<String, String> temp3 = new HashMap<String, String>();
         temp3.put(FIRST_COLUMN, "Karina Kaif");
         temp3.put(SECOND_COLUMN, "Female");
         temp3.put(THIRD_COLUMN, "31");
-        temp3.put(FOURTH_COLUMN, "Unmarried");
         list.add(temp3);
 
         ListViewAdapter adapter=new ListViewAdapter(this, list);
