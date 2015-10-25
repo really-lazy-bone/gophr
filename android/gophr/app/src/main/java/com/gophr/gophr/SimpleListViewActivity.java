@@ -21,8 +21,10 @@ public class SimpleListViewActivity extends Activity {
     private ArrayList<HashMap<String, String>> list;
     private List<Item> items = new ArrayList<>();
     private double tip;
+    private double total;
 
     TextView tipAmount;
+    TextView totalAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +35,19 @@ public class SimpleListViewActivity extends Activity {
 
         items.add( new Item(1, "Turkey Sandwich", 4.99 ));
         items.add(new Item(2, "Slice of Pizza", 2.99));
-        items.add(new Item(1, "Bottle of Coke", 1.49));
+        items.add(new Item(3, "Bottle of Coke", 1.49));
 
         ListViewAdapter adapter=new ListViewAdapter(this, items);
         listView.setAdapter(adapter);
         tip = 4.00;
 
         tipAmount= (TextView)findViewById(R.id.tipAmount);
+        totalAmount= (TextView)findViewById(R.id.totalAmount);
+
+        // api/orders/
+
         tipAmount.setText("Tip: $" + String.format("%.02f", tip));
+        totalAmount.setText("Total: $" + String.format("%.02f", getTotal(items) + tip));
 
 //        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
 //        {
@@ -52,5 +59,13 @@ public class SimpleListViewActivity extends Activity {
 //            }
 //
 //        });
+    }
+
+    private double getTotal(List<Item> items) {
+        double total = 0;
+        for(Item item: items) {
+            total += item.getQuantity() * item.getPrice();
+        }
+        return total;
     }
 }

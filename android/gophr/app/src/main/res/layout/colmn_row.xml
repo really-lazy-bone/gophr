@@ -19,7 +19,7 @@
         android:id="@+id/item"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:layout_weight="1.21"
+        android:layout_weight="1.08"
         android:textSize="40sp"
         android:textIsSelectable="true"
         android:textAlignment="textStart"
@@ -28,10 +28,13 @@
     <TextView
         android:id="@+id/price"
         android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:gravity="right"
         android:layout_width="0dp"
-        android:layout_weight="0.33"
+        android:layout_weight="0.43"
         android:textSize="40sp"
+        android:textColor="#de000000"
         android:textAlignment="textEnd"
-        android:textColor="#de000000" />
+        android:paddingRight="16dp" />
 
 </LinearLayout>
