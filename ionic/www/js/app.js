@@ -1,3 +1,8 @@
+'use strict';
+
+// TODO: change this to productional address later
+var SERVER_ADDRESS = 'http://2d240713.ngrok.io';
+
 angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator'])
 
 .run(function($ionicPlatform) {
@@ -37,73 +42,17 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator']
       });;
   }])
 
-.controller('LocationPickerCtrl', function($scope, $ionicPopup, $timeout, $location, ContactsState, $ionicLoading) {
-  var vm = this;
-
-  vm.order = {
-    contacts: ContactsState.contacts
-  };
-
-  vm.completeVoucher = completeVoucher;
-
-  function completeVoucher () {
-    vm.loadingModal = $ionicPopup.show({
-      template: '<ion-spinner icon="android"></ion-spinner>',
-      cssClass: 'confirmation'
-    });
-
-    $timeout(function() {
-      vm.loadingModal.close();
-
-      $timeout(function() {
-        vm.completeModal = $ionicPopup.show({
-          template: '<div><i class="icon ion-android-done"></i></div>' +
-            '<div>Sent</div>',
-          cssClass: 'confirmation'
-        });
-
-        $timeout(function() {
-          vm.completeModal.close();
-          $timeout(function() {
-            $location.path('/home');
-          }, 500);
-        }, 1000);
-      }, 500);
-    }, 1000);
-
-  }
-})
-
 .controller('HomeCtrl', function($http) {
   var vm = this;
 
-  var now = new Date();
-  var nextHour = new Date(now).setHours(now.getHours() + 1);
-  var twoHoursLater = new Date(now).setMinutes(now.getMinutes() + 2);
+  vm.orders = [];
 
-  vm.orders = [
-    {
-      id: 0,
-      state: 'pending',
-      name: 'Black Friday',
-      lockedDateTime: nextHour,
-      pickupDateTime: twoHoursLater
-    },
-    {
-      id: 0,
-      state: 'completed',
-      name: 'Tender Green',
-      lockedDateTime: new Date(),
-      pickupDateTime: new Date()
-    },
-    {
-      id: 0,
-      state: 'completed',
-      name: 'Starbucks',
-      lockedDateTime: new Date(),
-      pickupDateTime: new Date()
-    },
-  ];
+  $http.get(SERVER_ADDRESS + '/api/orders')
+    .then(function(response) {
+      vm.orders = response.data;
+    }, function(response) {
+      console.error(response);
+    });
 
   vm.getPendingList = getPendingList;
   vm.getCompletedList = getCompletedList;
@@ -124,7 +73,7 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator']
 .controller('NewPurchaseCtrl', function(ContactsState, $location) {
   var vm = this;
 
-
+  // hard code groups and contacts
   vm.groups = [
     {
       name: 'Dev team'
@@ -184,8 +133,56 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator']
   }
 })
 
-.controller('PickupCtrl', function($timeout, $scope) {
+.controller('LocationPickerCtrl', function($scope, $ionicPopup, $timeout, $location, ContactsState, $ionicLoading, $http) {
   var vm = this;
+
+  vm.order = {
+    contacts: ContactsState.contacts
+  };
+
+  vm.completeVoucher = completeVoucher;
+
+  function completeVoucher () {
+    vm.loadingModal = $ionicPopup.show({
+      template: '<ion-spinner icon="android"></ion-spinner>',
+      cssClass: 'confirmation'
+    });
+
+    // TODO: implement actual date picker
+    vm.order.pickupDateTime = new Date();
+
+    $http.post(SERVER_ADDRESS + '/api/order', vm.order)
+      .then(function() {
+      });
+
+    $timeout(function() {
+      vm.loadingModal.close();
+
+      $timeout(function() {
+        vm.completeModal = $ionicPopup.show({
+          template: '<div><i class="icon ion-android-done"></i></div>' +
+            '<div>Sent</div>',
+          cssClass: 'confirmation'
+        });
+
+        $timeout(function() {
+          vm.completeModal.close();
+          $timeout(function() {
+            $location.path('/home');
+          }, 500);
+        }, 1000);
+      }, 500);
+    }, 1000);
+  }
+})
+
+.controller('PickupCtrl', function($timeout, $scope, $http, $routeParams) {
+  var vm = this;
+
+  $http.get(SERVER_ADDRESS + '/api/order/' +$routeParams.id)
+    .then(function(response) {
+      vm.order = response.data;
+    });
 
   vm.loading = true;
   vm.completed = false;

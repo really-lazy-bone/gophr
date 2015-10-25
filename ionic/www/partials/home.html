@@ -17,9 +17,9 @@
     <div class="item item-divider">
       Pending
     </div>
-    <a ng-href="#/pickup/{{item.id}}" class="item"
+    <a ng-href="#/pickup/{{item._id}}" class="item"
       ng-repeat="item in home.getPendingList() | filter: home.search">
-      {{item.name}}
+      {{item.restaurant}}
       <span class="item-note warning">
         {{item.pickupDateTime | relativeDate}}
       </span>

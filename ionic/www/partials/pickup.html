@@ -21,19 +21,19 @@
 
     <div>
       <strong>
-        Restaurant
+        {{pickup.order.restaurant}}
       </strong>
     </div>
     <div>
       <time>
-        1:30pm
+        {{pickup.order.pickupDateTime | date: 'shortTime'}}
       </time>
     </div>
   </section>
 
   <div class="list">
     <div class="item item-divider">
-      Black Friday
+      Items
     </div>
 
     <a class="item flex-item-meta">

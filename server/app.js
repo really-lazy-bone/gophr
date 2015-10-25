@@ -14,7 +14,7 @@ var Schema = mongoose.Schema;
 
 var OrderSchema = new Schema({
     restaurant: String,
-    contacts: {
+    contacts: [{
         name: String,
         creditCard: {
             number: String,
@@ -28,7 +28,7 @@ var OrderSchema = new Schema({
                 value: Number
             }
         ]
-    },
+    }],
     lockedDateTime: Date,
     pickupDateTime: Date,
     state: String
@@ -80,7 +80,7 @@ app.get('/api/orders', function(req, res) {
     });
 });
 app.get('/api/order/:orderId', function(req, res) {
-    ORder.findOne({_id: req.params.orderId}, function(err, order) {
+    Order.findOne({_id: req.params.orderId}, function(err, order) {
         if (err) {
             res.status(503).end();
             return;
@@ -98,8 +98,10 @@ app.get('/api/order/:orderId/checkout', function(req, res) {
     // TODO: to be implemented
     res.status(503).end();
 });
-app.post('/api/order/:orderId', function(req, res) {
+app.post('/api/order', function(req, res) {
     var order = new Order(req.body);
+
+    order.state = 'pending';
 
     order.save(function(err) {
         if (err) {
