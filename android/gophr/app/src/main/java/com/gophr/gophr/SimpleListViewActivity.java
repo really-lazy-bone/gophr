@@ -3,15 +3,25 @@ package com.gophr.gophr;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.util.Log;
 
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
+import java.net.URL;
+import java.net.HttpURLConnection;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.io.BufferedReader;
+
+import android.os.StrictMode;
 
 /**
  * Created by tmitim_air on 10/24/15.
@@ -33,39 +43,75 @@ public class SimpleListViewActivity extends Activity {
 
         ListView listView=(ListView)findViewById(R.id.listView1);
 
-        items.add( new Item(1, "Turkey Sandwich", 4.99 ));
-        items.add(new Item(2, "Slice of Pizza", 2.99));
-        items.add(new Item(3, "Bottle of Coke", 1.49));
+        String json = get("http://2d240713.ngrok.io/api/order/9108879894/shoppinglist");
+        Gson gson = new Gson();
 
-        ListViewAdapter adapter=new ListViewAdapter(this, items);
+        Log.d("gophr_log",json);
+
+        JsonObject jo = gson.fromJson(json, JsonObject.class);
+
+        ListViewAdapter adapter=new ListViewAdapter(this, jo.getItems());
         listView.setAdapter(adapter);
-        tip = 4.00;
+        tip = jo.getTip();
 
         tipAmount= (TextView)findViewById(R.id.tipAmount);
         totalAmount= (TextView)findViewById(R.id.totalAmount);
 
-        // api/orders/
-
         tipAmount.setText("Tip: $" + String.format("%.02f", tip));
-        totalAmount.setText("Total: $" + String.format("%.02f", getTotal(items) + tip));
+        totalAmount.setText("Total: $" + String.format("%.02f", getTotal(jo.getItems()) + tip));
 
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-//        {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
-//            {
-//                int pos=position+1;
-//                Toast.makeText(SimpleListViewActivity.this, Integer.toString(pos)+" Clicked", Toast.LENGTH_SHORT).show();
-//            }
-//
-//        });
     }
 
     private double getTotal(List<Item> items) {
         double total = 0;
         for(Item item: items) {
-            total += item.getQuantity() * item.getPrice();
+            total = total +  (item.getQuantity() * item.getPrice());
         }
         return total;
+    }
+
+    public String get(String surl) {
+
+        StringBuffer chaine = new StringBuffer("");
+        try{
+            URL url = new URL(surl);
+
+            // So async method is not required.
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+
+            connection.setRequestMethod("GET");
+            connection.setDoInput(true);
+            connection.connect();
+
+            InputStream inputStream = connection.getInputStream();
+
+            BufferedReader rd = new BufferedReader(new InputStreamReader(inputStream));
+            String line = "";
+            while ((line = rd.readLine()) != null) {
+                chaine.append(line);
+            }
+
+        } catch (Exception e) {
+            // writing exception to log
+            Log.d("gophr_log", e.toString() + e.getLocalizedMessage());
+        }
+
+        return chaine.toString();
+    }
+
+    public class JsonObject{
+        private double tip;
+        private List<Item> list;
+
+        public double getTip() {
+            return tip;
+        }
+
+        public List<Item> getItems() {
+            return list;
+        }
     }
 }

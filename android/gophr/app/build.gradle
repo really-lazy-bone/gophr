@@ -17,6 +17,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
@@ -25,4 +26,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:design:23.1.0'
     compile 'com.clover.sdk:clover-android-sdk:86'
+    compile 'com.google.code.gson:gson:2.4'
+//    compile 'org.apache.httpcomponents:httpclient:4.5.1'
+//    compile 'org.apache.httpcomponents:httpasyncclient:4.1'
 }
