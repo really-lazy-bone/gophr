@@ -12,4 +12,11 @@
         android:layout_alignParentTop="true" >
     </ListView>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Tip"
+        android:id="@+id/textView" />
+
 </LinearLayout>

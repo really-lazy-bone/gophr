@@ -4,22 +4,30 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/quantity"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:layout_weight="1"
-        android:textStyle="bold" />
+        android:layout_weight="0.19"
+        android:textStyle="bold"
+        android:textIsSelectable="false"
+        android:textSize="20sp"
+        android:textAlignment="center" />
 
     <TextView
-        android:id="@+id/gender"
+        android:id="@+id/item"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1.21"
+        android:textSize="20sp"
+        android:textIsSelectable="true"
+        android:textAlignment="textStart" />
 
     <TextView
-        android:id="@+id/age"
+        android:id="@+id/price"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:layout_weight="0.5" />
+        android:layout_weight="0.33"
+        android:textSize="20sp"
+        android:textAlignment="textEnd" />
 
 </LinearLayout>

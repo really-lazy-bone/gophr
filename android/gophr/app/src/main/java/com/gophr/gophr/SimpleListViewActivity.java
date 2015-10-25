@@ -12,6 +12,7 @@ import static com.gophr.gophr.Constants.SECOND_COLUMN;
 import static com.gophr.gophr.Constants.THIRD_COLUMN;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 
 import android.app.Activity;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 public class SimpleListViewActivity extends Activity {
 
     private ArrayList<HashMap<String, String>> list;
+    private List<Item> items = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,27 +37,33 @@ public class SimpleListViewActivity extends Activity {
 
         ListView listView=(ListView)findViewById(R.id.listView1);
 
-        list = new ArrayList<HashMap<String,String>>();
+        items.add( new Item(1, "Turkey Sandwich", 4.99 ));
+        items.add( new Item(2, "Slice of Pizze", 2.99 ));
+        items.add( new Item(1, "Bottle of Coke", 1.49 ));
 
-        HashMap<String,String> temp=new HashMap<String, String>();
-        temp.put(FIRST_COLUMN, "Ankit Karia");
-        temp.put(SECOND_COLUMN, "Male");
-        temp.put(THIRD_COLUMN, "22");
-        list.add(temp);
 
-        HashMap<String,String> temp2=new HashMap<String, String>();
-        temp2.put(FIRST_COLUMN, "Rajat Ghai");
-        temp2.put(SECOND_COLUMN, "Male");
-        temp2.put(THIRD_COLUMN, "25");
-        list.add(temp2);
+//        list = new ArrayList<HashMap<String,String>>();
+//
+//
+//        HashMap<String,String> temp=new HashMap<String, String>();
+//        temp.put(FIRST_COLUMN, "1");
+//        temp.put(SECOND_COLUMN, "Turkey Sandwich");
+//        temp.put(THIRD_COLUMN, "4.99");
+//        list.add(temp);
+//
+//        HashMap<String,String> temp2=new HashMap<String, String>();
+//        temp2.put(FIRST_COLUMN, "2");
+//        temp2.put(SECOND_COLUMN, "Slice of Pizza");
+//        temp2.put(THIRD_COLUMN, "3.99");
+//        list.add(temp2);
+//
+//        HashMap<String, String> temp3 = new HashMap<String, String>();
+//        temp3.put(FIRST_COLUMN, "1");
+//        temp3.put(SECOND_COLUMN, "Bottle of Coke");
+//        temp3.put(THIRD_COLUMN, "1.30");
+//        list.add(temp3);
 
-        HashMap<String, String> temp3 = new HashMap<String, String>();
-        temp3.put(FIRST_COLUMN, "Karina Kaif");
-        temp3.put(SECOND_COLUMN, "Female");
-        temp3.put(THIRD_COLUMN, "31");
-        list.add(temp3);
-
-        ListViewAdapter adapter=new ListViewAdapter(this, list);
+        ListViewAdapter adapter=new ListViewAdapter(this, items);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()

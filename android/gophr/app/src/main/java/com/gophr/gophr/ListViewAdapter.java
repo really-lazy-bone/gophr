@@ -5,6 +5,7 @@ import static com.gophr.gophr.Constants.SECOND_COLUMN;
 import static com.gophr.gophr.Constants.THIRD_COLUMN;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 
 import android.app.Activity;
@@ -16,27 +17,27 @@ import android.widget.TextView;
 
 public class ListViewAdapter extends BaseAdapter{
 
-    public ArrayList<HashMap<String, String>> list;
+    public List<Item> items;
     Activity activity;
     TextView txtFirst;
     TextView txtSecond;
     TextView txtThird;
-    public ListViewAdapter(Activity activity,ArrayList<HashMap<String, String>> list){
+    public ListViewAdapter(Activity activity, List<Item> items){
         super();
         this.activity=activity;
-        this.list=list;
+        this.items=items;
     }
 
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return list.size();
+        return items.size();
     }
 
     @Override
     public Object getItem(int position) {
         // TODO Auto-generated method stub
-        return list.get(position);
+        return items.get(position);
     }
 
     @Override
@@ -57,16 +58,17 @@ public class ListViewAdapter extends BaseAdapter{
 
             convertView=inflater.inflate(R.layout.colmn_row, null);
 
-            txtFirst=(TextView) convertView.findViewById(R.id.name);
-            txtSecond=(TextView) convertView.findViewById(R.id.gender);
-            txtThird=(TextView) convertView.findViewById(R.id.age);
+            txtFirst=(TextView) convertView.findViewById(R.id.quantity);
+            txtSecond=(TextView) convertView.findViewById(R.id.item);
+            txtThird=(TextView) convertView.findViewById(R.id.price);
 
         }
 
-        HashMap<String, String> map=list.get(position);
-        txtFirst.setText(map.get(FIRST_COLUMN));
-        txtSecond.setText(map.get(SECOND_COLUMN));
-        txtThird.setText(map.get(THIRD_COLUMN));
+//        HashMap<String, String> map=list.get(position);
+        Item item = items.get(position);
+        txtFirst.setText("" + item.getQuantity());
+        txtSecond.setText(item.getName());
+        txtThird.setText("$" + item.getPrice());
 
         return convertView;
     }
