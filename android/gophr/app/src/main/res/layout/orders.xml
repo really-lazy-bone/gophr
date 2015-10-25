@@ -3,7 +3,8 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffff">
+    android:background="#ffffff"
+    android:scrollbars="vertical">
 
     <ListView
         android:id="@+id/listView1"
@@ -39,6 +40,6 @@
         android:text="Confirm"
         android:id="@+id/confirmButton"
         android:layout_gravity="center_horizontal"
-        android:textSize="50sp" />
+        android:textSize="40sp" />
 
 </LinearLayout>

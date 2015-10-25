@@ -38,7 +38,7 @@ public class SimpleListViewActivity extends Activity {
     private List<Item> items = new ArrayList<>();
     private double tip;
     final Context context = this;
-
+    final String SERVER_PATH = "http://45.55.186.189:3000/api/order/";
     TextView tipAmount;
     TextView totalAmount;
 
@@ -53,13 +53,15 @@ public class SimpleListViewActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         String barcode = "9108879894";
+
         if (extras != null) {
             barcode = extras.getString("barcode");
-        }
-        String path = "http://2d240713.ngrok.io/api/order/" + barcode + "/shoppinglist";
+            String path = SERVER_PATH + barcode + "/shoppinglist";
 
+            Log.d("gophr_log", path);
+        }
         try {
-            String json = get("http://2d240713.ngrok.io/api/order/" + barcode + "/shoppinglist");
+            String json = get(SERVER_PATH + barcode + "/shoppinglist");
 
             Gson gson = new Gson();
 

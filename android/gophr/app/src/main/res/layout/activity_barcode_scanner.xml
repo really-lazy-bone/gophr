@@ -19,21 +19,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
     android:paddingBottom="16dp"
     tools:context=".MerchantTestActivity"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="#ffffff"
+    android:orientation="vertical">
 
 
     <Button
-      android:layout_width="302dp"
-      android:layout_height="153dp"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
       android:text="scan"
       android:id="@+id/start"
-      android:layout_gravity="left"
+      android:layout_gravity="center_horizontal"
         android:textSize="100dp"
         android:capitalize="words"
         android:layout_weight="0.31" />
