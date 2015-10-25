@@ -13,7 +13,7 @@
       Restaurant
     </div>
 
-    <label class="item item-input">
+    <label class="item item-input no-up-border">
       <input type="text" placeholder="Restaurant name"
         ng-model="location.order.restaurant">
     </label>
@@ -22,16 +22,17 @@
       Pickup Time
     </div>
 
-    <label class="item item-input">
+    <label class="item item-input no-up-border">
       <input type="text" placeholder="1:30 pm"
-        ng-model="location.order.pickupDateTime">
+        ng-blur="location.parsePickupDateTime()"
+        ng-model="location.pickupDateTimeStr">
     </label>
 
     <div class="item item-divider optional">
       Orders Finalize
     </div>
 
-    <label class="item item-input">
+    <label class="item item-input no-up-border">
       <input type="text" placeholder="12:45 pm"
         ng-model="location.order.lockedDateTime">
     </label>

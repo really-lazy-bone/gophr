@@ -12,7 +12,7 @@
     <!-- BR Code -->
     <div>
       <ion-spinner icon="android" ng-show="pickup.loading"></ion-spinner>
-      <div class="bar-code" barcode-generator="12345678901234567890"
+      <div class="bar-code" barcode-generator="{{pickup.order.fakeId}}"
         ng-hide="pickup.loading || pickup.completed"></div>
       <section class="completed" ng-show="pickup.completed">
         <div><i class="icon ion-android-done"></i></div>
@@ -41,28 +41,19 @@
       </a>
     </div>
 
-    <a class="item flex-item-meta">
-      <!-- qty, item name, amount -->
-      <span>1</span>
-      <span class="description">Roasted Beef</span>
-      <span>$23.12</span>
-    </a>
-    <a class="item flex-item-meta">
-      <!-- qty, item name, amount -->
-      <span class="highlight">2</span>
-      <span class="description">Mashed Potato</span>
-      <span>$3.42</span>
-    </a>
-    <a class="item flex-item-meta">
-      <!-- qty, item name, amount -->
-      <span class="highlight">5</span>
-      <span class="description">Frech Fries</span>
-      <span>$10.45</span>
+    <a class="item flex-item-meta"
+      ng-repeat="item in pickup.shoppinglist">
+      <span>{{item.quantity}}</span>
+      <span class="description">{{item.name}}</span>
+      <span>{{item.price | currency}}</span>
     </a>
     <a class="item flex-item-meta total">
-      <!-- qty, item name, amount -->
+      <span class="description">Tip</span>
+      <span>{{pickup.tip | currency}}</span>
+    </a>
+    <a class="item flex-item-meta total">
       <span class="description">Total</span>
-      <span>$36.76</span>
+      <span>{{pickup.getTotal() | currency}}</span>
     </a>
   </div>
 </ion-content>

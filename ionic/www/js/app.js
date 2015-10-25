@@ -143,15 +143,44 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
   };
 
   vm.completeVoucher = completeVoucher;
+  vm.parsePickupDateTime = parsePickupDateTime;
+
+  function parsePickupDateTime () {
+    if (vm.pickupDateTimeStr) {
+      vm.order.pickupDateTime = parseTime(vm.pickupDateTimeStr);
+      var ampm = vm.order.pickupDateTime.getHours() > 12 ? 'pm' : 'am';
+      var hours = vm.order.pickupDateTime.getHours() % 12 || 12;
+      vm.pickupDateTimeStr = hours + ':' +
+        vm.order.pickupDateTime.getMinutes() + ' ' + ampm;
+    }
+  }
+
+  function parseTime(timeString) {
+    if (timeString == '') return null;
+
+    var time = timeString.match(/(\d+)(:(\d\d))?\s*(p?)/i);
+    if (time == null) return null;
+
+    var hours = parseInt(time[1],10);
+    if (hours == 12 && !time[4]) {
+          hours = 0;
+    }
+    else {
+        hours += (hours < 12 && time[4])? 12 : 0;
+    }
+    var d = new Date();
+    d.setHours(hours);
+    d.setMinutes(parseInt(time[3],10) || 0);
+    d.setSeconds(0, 0);
+    console.log(d);
+    return d;
+  }
 
   function completeVoucher () {
     vm.loadingModal = $ionicPopup.show({
       template: '<ion-spinner icon="android"></ion-spinner>',
       cssClass: 'confirmation'
     });
-
-    // TODO: implement actual date picker
-    vm.order.pickupDateTime = new Date();
 
     $http.post(SERVER_ADDRESS + '/api/order', vm.order)
       .then(function() {
@@ -181,14 +210,22 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
 .controller('PickupCtrl', function($timeout, $scope, $http, $routeParams) {
   var vm = this;
 
-  $http.get(SERVER_ADDRESS + '/api/order/' +$routeParams.id)
+  $http.get(SERVER_ADDRESS + '/api/order/' + $routeParams.id)
     .then(function(response) {
       vm.order = response.data;
 
       vm.userContact = vm.order.contacts.filter(function(contact) {
         return contact.name === USER_NAME;
       })[0];
+
+      $http.get(SERVER_ADDRESS + '/api/order/' + vm.order.fakeId + '/shoppinglist')
+        .then(function(response) {
+          vm.shoppinglist = response.data.list;
+          vm.tip = response.data.tip;
+        });
     });
+
+  vm.getTotal = getTotal;
 
   vm.loading = true;
   vm.completed = false;
@@ -200,6 +237,12 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
     //   vm.completed = true;
     // }, 1000);
   }, 1000);
+
+  function getTotal () {
+    return vm.shoppinglist.reduce(function(total, item) {
+      return total + item.quantity * item.price;
+    }, vm.tip);
+  }
 })
 
 .controller('RestaurantMenuCtrl', function($ionicPopup, $http, $routeParams, $location) {
