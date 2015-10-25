@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-package="com.gophr.gophr"
-xmlns:tools="http://schemas.android.com/tools">
+package="com.gophr.gophr" xmlns:tools="http://schemas.android.com/tools">
 
 <uses-sdk
     android:minSdkVersion="16"
@@ -13,7 +12,7 @@ xmlns:tools="http://schemas.android.com/tools">
 <application
     tools:replace="android:label"
     android:allowBackup="true"
-    android:icon="@drawable/ic_launcher"
+    android:icon="@drawable/gophricon64"
     android:label="@string/app_name">
     <activity
         android:name="com.gophr.gophr.MainActivity"

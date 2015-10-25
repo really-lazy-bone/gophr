@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -19,6 +20,9 @@ public class SimpleListViewActivity extends Activity {
 
     private ArrayList<HashMap<String, String>> list;
     private List<Item> items = new ArrayList<>();
+    private double tip;
+
+    TextView tipAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,21 +32,25 @@ public class SimpleListViewActivity extends Activity {
         ListView listView=(ListView)findViewById(R.id.listView1);
 
         items.add( new Item(1, "Turkey Sandwich", 4.99 ));
-        items.add( new Item(2, "Slice of Pizza", 2.99 ));
-        items.add( new Item(1, "Bottle of Coke", 1.49 ));
+        items.add(new Item(2, "Slice of Pizza", 2.99));
+        items.add(new Item(1, "Bottle of Coke", 1.49));
 
         ListViewAdapter adapter=new ListViewAdapter(this, items);
         listView.setAdapter(adapter);
+        tip = 4.00;
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
-            {
-                int pos=position+1;
-                Toast.makeText(SimpleListViewActivity.this, Integer.toString(pos)+" Clicked", Toast.LENGTH_SHORT).show();
-            }
+        tipAmount= (TextView)findViewById(R.id.tipAmount);
+        tipAmount.setText("Tip: $" + String.format("%.02f", tip));
 
-        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+//        {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
+//            {
+//                int pos=position+1;
+//                Toast.makeText(SimpleListViewActivity.this, Integer.toString(pos)+" Clicked", Toast.LENGTH_SHORT).show();
+//            }
+//
+//        });
     }
 }

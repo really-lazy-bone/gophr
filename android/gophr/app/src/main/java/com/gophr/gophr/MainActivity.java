@@ -15,7 +15,6 @@
  */
 package com.gophr.gophr;
 
-import android.accounts.Account;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -24,25 +23,16 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.TextView;
 import com.clover.sdk.v1.Intents;
 import com.clover.sdk.v3.scanner.BarcodeScanner;
 
-
 public class MainActivity extends Activity {
-    private static final String TAG = "BarcodeScannerTestActivity";
 
-    private Account mAccount;
     private BarcodeScanner mBarcodeScanner;
-
-    private CheckBox qrCode;
-    private CheckBox code1D;
 
     private BroadcastReceiver barcodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String barcode = intent.getStringExtra("Barcode");
             Intent intent1 = new Intent(MainActivity.this, SimpleListViewActivity.class);
             startActivity(intent1);
         }
@@ -52,7 +42,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barcode_scanner_test);
-
 
         mBarcodeScanner = new BarcodeScanner(this);
 
