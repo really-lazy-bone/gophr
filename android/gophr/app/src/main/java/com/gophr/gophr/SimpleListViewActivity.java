@@ -43,22 +43,34 @@ public class SimpleListViewActivity extends Activity {
 
         ListView listView=(ListView)findViewById(R.id.listView1);
 
-        String json = get("http://2d240713.ngrok.io/api/order/9108879894/shoppinglist");
-        Gson gson = new Gson();
+        Bundle extras = getIntent().getExtras();
+        String barcode = "9108879894";
+        if (extras != null) {
+            barcode = extras.getString("barcode");
+        }
+        String path = "http://2d240713.ngrok.io/api/order/" + barcode + "/shoppinglist";
 
-        Log.d("gophr_log",json);
+        try {
+            String json = get("http://2d240713.ngrok.io/api/order/" + barcode + "/shoppinglist");
 
-        JsonObject jo = gson.fromJson(json, JsonObject.class);
+            Gson gson = new Gson();
 
-        ListViewAdapter adapter=new ListViewAdapter(this, jo.getItems());
-        listView.setAdapter(adapter);
-        tip = jo.getTip();
+            Log.d("gophr_log", json);
 
+            JsonObject jo = gson.fromJson(json, JsonObject.class);
+
+            ListViewAdapter adapter = new ListViewAdapter(this, jo.getItems());
+            listView.setAdapter(adapter);
+            tip = jo.getTip();
+            items = jo.getItems();
+        } catch (Exception e) {
+            // do nothing
+        }
         tipAmount= (TextView)findViewById(R.id.tipAmount);
         totalAmount= (TextView)findViewById(R.id.totalAmount);
 
         tipAmount.setText("Tip: $" + String.format("%.02f", tip));
-        totalAmount.setText("Total: $" + String.format("%.02f", getTotal(jo.getItems()) + tip));
+        totalAmount.setText("Total: $" + String.format("%.02f", getTotal(items) + tip));
 
     }
 

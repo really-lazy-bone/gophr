@@ -33,7 +33,10 @@ public class MainActivity extends Activity {
     private BroadcastReceiver barcodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+
+            String barcode = intent.getStringExtra("Barcode");
             Intent intent1 = new Intent(MainActivity.this, SimpleListViewActivity.class);
+            intent1.putExtra("barcode",barcode);
             startActivity(intent1);
         }
     };

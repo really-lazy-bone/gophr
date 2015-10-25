@@ -24,22 +24,18 @@
     android:paddingRight="16dp"
     android:paddingTop="16dp"
     android:paddingBottom="16dp"
-    tools:context=".MerchantTestActivity">
+    tools:context=".MerchantTestActivity"
+    android:weightSum="1">
 
 
     <Button
-      android:layout_width="330dp"
-      android:layout_height="match_parent"
+      android:layout_width="302dp"
+      android:layout_height="153dp"
       android:text="scan"
       android:id="@+id/start"
       android:layout_gravity="left"
         android:textSize="100dp"
-        android:capitalize="words" />
-
-    <ImageView
-        android:layout_width="92dp"
-        android:layout_height="92dp"
-        android:id="@+id/imageView"
-        android:layout_gravity="right" />
+        android:capitalize="words"
+        android:layout_weight="0.31" />
 
 </LinearLayout>
