@@ -7,11 +7,6 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator']
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
     if(window.StatusBar) {
       StatusBar.backgroundColorByHexString('#42f6cb');
     }
@@ -51,7 +46,7 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator']
     .then(function(response) {
       vm.orders = response.data;
     }, function(response) {
-      console.error(response);
+      console.dir(response);
     });
 
   vm.getPendingList = getPendingList;
