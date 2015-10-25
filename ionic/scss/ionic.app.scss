@@ -344,7 +344,9 @@ input, button, select, textarea {
 
 .button-bar {
   .button.active {
-    background-color: $main;
+    background-color: #000;
+    color: $white;
+    font-weight: 800;
   }
 }
 

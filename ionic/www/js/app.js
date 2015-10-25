@@ -78,22 +78,31 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
       });;
   }])
 
-.controller('HomeCtrl', function($http, $ionicPopup) {
+.controller('HomeCtrl', function($http, $ionicPopup, $scope) {
   var vm = this;
 
   vm.orders = [];
 
-  $http.get(SERVER_ADDRESS + '/api/orders')
-    .then(function(response) {
-      vm.orders = response.data;
-    }, function(response) {
-      alert(JSON.stringify(response));
-    });
+  refresh();
 
   vm.getPendingList = getPendingList;
   vm.getCompletedList = getCompletedList;
   vm.isLessThan5 = isLessThan5;
   vm.isPast = isPast;
+  vm.refresh = refresh;
+
+  function refresh () {
+    $http.get(SERVER_ADDRESS + '/api/orders')
+      .then(function(response) {
+        vm.orders = response.data;
+      }, function(response) {
+        alert(JSON.stringify(response));
+      })
+      .finally(function() {
+        // Stop the ion-refresher from spinning
+        $scope.$broadcast('scroll.refreshComplete');
+      });;
+  }
 
   function isLessThan5 (time) {
     return (new Date(time).getTime() - new Date().getTime()) > 0 &&
@@ -187,9 +196,20 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
 .controller('LocationPickerCtrl', function($scope, $ionicPopup, $timeout, $location, ContactsState, $ionicLoading, $http) {
   var vm = this;
 
+  var pickupDateTime = new Date();
+  pickupDateTime.setHours(pickupDateTime.getHours() + 1);
+
+  console.log(pickupDateTime);
+
   vm.order = {
-    contacts: ContactsState.contacts
+    contacts: ContactsState.contacts,
+    pickupDateTime: pickupDateTime
   };
+
+  var ampm = vm.order.pickupDateTime.getHours() > 12 ? 'pm' : 'am';
+  var hours = vm.order.pickupDateTime.getHours() % 12 || 12;
+  vm.pickupDateTimeStr = hours + ':' +
+    vm.order.pickupDateTime.getMinutes() + ' ' + ampm;
 
   vm.completeVoucher = completeVoucher;
   vm.parsePickupDateTime = parsePickupDateTime;
@@ -221,7 +241,6 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
     d.setHours(hours);
     d.setMinutes(parseInt(time[3],10) || 0);
     d.setSeconds(0, 0);
-    console.log(d);
     return d;
   }
 
@@ -312,6 +331,7 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
 
 .controller('RestaurantMenuCtrl', function($ionicPopup, $http, $routeParams, $location) {
   var vm = this;
+  vm.tip = 0;
 
   $http.get(SERVER_ADDRESS + '/api/order/' + $routeParams.orderId)
     .then(function(response) {
@@ -320,6 +340,11 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
       vm.currentContact = vm.order.contacts.filter(function(contact) {
         return contact._id == $routeParams.userContactId;
       })[0];
+      var beforeTipTotal = vm.currentContact.orderItems.reduce(function(amount, orderItem) {
+        return amount + orderItem.price * orderItem.quantity;
+      }, 0);
+      vm.tip = vm.currentContact.tip ? vm.currentContact.tip : 0;
+      vm.tip = Math.floor((vm.tip / beforeTipTotal) * 100);
     });
 
   $http.get(SERVER_ADDRESS + '/api/restaurant/menu')

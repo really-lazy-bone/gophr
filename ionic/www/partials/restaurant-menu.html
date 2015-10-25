@@ -62,6 +62,9 @@
     <div class="last item no-up-border">
       <div class="button-bar">
         <a class="button"
+          ng-class="{'active': menu.tip === 0}"
+          ng-click="menu.setTip(0)">0%</a>
+        <a class="button"
           ng-class="{'active': menu.tip === 12}"
           ng-click="menu.setTip(12)">12%</a>
         <a class="button"
