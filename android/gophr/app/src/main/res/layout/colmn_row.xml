@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_floating_material_light">
 
     <TextView
         android:id="@+id/quantity"
@@ -10,24 +11,27 @@
         android:layout_weight="0.19"
         android:textStyle="bold"
         android:textIsSelectable="false"
-        android:textSize="20sp"
-        android:textAlignment="center" />
+        android:textSize="40sp"
+        android:textAlignment="center"
+        android:textColor="@color/primary_text_default_material_light" />
 
     <TextView
         android:id="@+id/item"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="1.21"
-        android:textSize="20sp"
+        android:textSize="40sp"
         android:textIsSelectable="true"
-        android:textAlignment="textStart" />
+        android:textAlignment="textStart"
+        android:textColor="@color/primary_text_default_material_light" />
 
     <TextView
         android:id="@+id/price"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="0.33"
-        android:textSize="20sp"
-        android:textAlignment="textEnd" />
+        android:textSize="40sp"
+        android:textAlignment="textEnd"
+        android:textColor="#de000000" />
 
 </LinearLayout>
