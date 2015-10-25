@@ -1,10 +1,10 @@
 'use strict';
 
 // TODO: change this to productional address later
-var SERVER_ADDRESS = 'http://2d240713.ngrok.io';
+var SERVER_ADDRESS = 'http://45.55.186.189:3000';
 
 // hardcoded username to demonstrate user system
-var USER_NAME = 'Eric';
+var USER_NAME = 'Michael';
 
 var socket = io.connect(SERVER_ADDRESS);
 
@@ -87,7 +87,7 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
     .then(function(response) {
       vm.orders = response.data;
     }, function(response) {
-      console.dir(response);
+      alert(JSON.stringify(response));
     });
 
   vm.getPendingList = getPendingList;
@@ -318,7 +318,7 @@ angular.module('gophr', ['ionic', 'ngRoute', 'relativeDate', 'barcodeGenerator',
       vm.order = response.data;
 
       vm.currentContact = vm.order.contacts.filter(function(contact) {
-        return contact.id == $routeParams.contactId;
+        return contact._id == $routeParams.userContactId;
       })[0];
     });
 

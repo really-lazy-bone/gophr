@@ -1,4 +1,10 @@
 {
   "name": "ionic-payeezy",
-  "app_id": ""
+  "app_id": "03eba19d",
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "http://2d240713.ngrok.io"
+    }
+  ]
 }
